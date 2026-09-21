@@ -12,13 +12,22 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'category_id', 'name', 'slug', 'short_description', 'description',
-        'material', 'care', 'country_of_origin', 'is_active', 'is_featured',
+        'category_id', 'name', 'slug', 'brand', 'manufacturer', 'short_description',
+        'description', 'material', 'composition', 'properties', 'measurements',
+        'model_info', 'care', 'video_url', 'country_of_origin', 'is_active',
+        'is_featured', 'is_new', 'is_gift', 'seo_title', 'seo_description',
     ];
 
     protected function casts(): array
     {
-        return ['is_active' => 'boolean', 'is_featured' => 'boolean'];
+        return [
+            'properties' => 'array',
+            'measurements' => 'array',
+            'is_active' => 'boolean',
+            'is_featured' => 'boolean',
+            'is_new' => 'boolean',
+            'is_gift' => 'boolean',
+        ];
     }
 
     public function category(): BelongsTo
@@ -36,4 +45,3 @@ class Product extends Model
         return $this->hasMany(ProductImage::class)->orderBy('sort_order');
     }
 }
-

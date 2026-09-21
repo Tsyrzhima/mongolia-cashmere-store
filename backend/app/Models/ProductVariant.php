@@ -12,7 +12,8 @@ class ProductVariant extends Model
 
     protected $fillable = [
         'product_id', 'sku', 'external_id', 'color', 'size', 'price',
-        'compare_at_price', 'stock_quantity', 'is_active',
+        'compare_at_price', 'stock_quantity', 'online_stock_quantity',
+        'offline_stock_quantity', 'is_active',
     ];
 
     protected function casts(): array
@@ -29,4 +30,3 @@ class ProductVariant extends Model
         return $this->belongsTo(Product::class);
     }
 }
-

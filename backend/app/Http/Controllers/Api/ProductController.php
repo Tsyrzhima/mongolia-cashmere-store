@@ -21,6 +21,14 @@ class ProductController extends Controller
                 );
             })
             ->when($request->boolean('featured'), fn ($query) => $query->where('is_featured', true))
+            ->when($request->boolean('new'), fn ($query) => $query->where('is_new', true))
+            ->when($request->boolean('gift'), fn ($query) => $query->where('is_gift', true))
+            ->when($request->string('material')->isNotEmpty(), fn ($query) =>
+                $query->where('material', 'ilike', '%'.$request->string('material')->toString().'%')
+            )
+            ->when($request->boolean('offline_available'), fn ($query) =>
+                $query->whereHas('variants', fn ($variants) => $variants->where('offline_stock_quantity', '>', 0))
+            )
             ->when($request->string('search')->isNotEmpty(), function ($query) use ($request) {
                 $search = '%'.$request->string('search')->toString().'%';
                 $query->where(fn ($products) => $products
@@ -41,4 +49,3 @@ class ProductController extends Controller
         return new ProductResource($product->load(['category', 'images', 'variants']));
     }
 }
-
